@@ -22,15 +22,17 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $phoneLength = config('seeders.users.phone_length', 9);
+
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'phone' => '0' . rand(pow(10, 8), pow(10, 9) - 1),
+            'phone' => '0' . rand(pow(10, $phoneLength - 1), pow(10, $phoneLength) - 1),
             'avatar' => $this->faker->imageUrl('images/', 300, 300, true),
-            'is_admin' => 0,
-            'is_blocked' => 0,
+            'is_admin' => config('seeders.users.is_admin', 0),
+            'is_blocked' => config('seeders.users.is_blocked', 0),
             'remember_token' => Str::random(10),
         ];
     }
