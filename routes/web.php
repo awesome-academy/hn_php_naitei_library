@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PublisherController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 
 /*
@@ -24,3 +26,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/locale/{locale}', [LocaleController::class, 'setLocale'])->name('locale');
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::prefix('publisher')->group(function () {
+        Route::get('/', [PublisherController::class, 'index'])->name('publisher.index')->middleware('auth');
+    });
+});
